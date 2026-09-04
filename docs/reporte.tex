@@ -1,0 +1,146 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\chead{GLUD Fried Chicken - Taller de Metricas de Software}
+\lhead{}
+\rhead{}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\Huge\bfseries GLUD Fried Chicken (GFC)\par}
+  \vspace{1cm}
+  {\Large Taller de Metricas de Software\par}
+  \vspace{0.5cm}
+  {\large Diseno de Software\par}
+
+  \vspace{2cm}
+  \begin{tabular}{rl}
+    \textbf{Nombre} & \textbf{Codigo} \\
+    \hline
+    Daniel Mateo Ballesteros Molina & 20221020102 \\
+    Jan Henrik Sanchez Jerez & 20231020130 \\
+    Juan Carlos Quintero Rubiano & 20232020172 \\
+    Juan Diego Peralta Barbosa & 20231020146 \\
+  \end{tabular}
+
+  \vspace{3cm}
+  {\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduccion}
+Completar con la introduccion del taller y el objetivo de la aplicacion.
+
+\section{Descripcion de la aplicacion}
+Describir la aplicacion CRUD para la gestion de comidas rapidas: entidades,
+funcionalidades y decisiones de diseno tomadas por el grupo.
+
+\section{Metricas con Source Monitor}
+\subsection{Instalacion}
+Pasos para instalar y configurar Source Monitor sobre el codigo fuente Java.
+
+\subsection{Metricas manejadas por la herramienta}
+Explicar el tipo de metricas que calcula Source Monitor (complejidad
+ciclomatica, lineas de codigo, sentencias por metodo, profundidad de bloques,
+etc.) y su significado.
+
+\subsection{Resultados obtenidos}
+Incluir la tabla de resultados de las metricas sobre la aplicacion:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Metrica} & \textbf{Valor} & \textbf{Rango aceptable} \\
+    \midrule
+    Lineas de Codigo (M0) & & \\
+    Sentencias (M1) & & \\
+    Metodos por Clase (M6) & & \\
+    Sentencias por Metodo (M7) & & \\
+    Complejidad Maxima (M10) & & \\
+    Profundidad Promedio (M13) & & \\
+    \bottomrule
+  \end{tabular}
+  \caption{Metricas obtenidas con Source Monitor}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{kiviat.png}
+  \caption{Diagrama Kiviat generado automaticamente por el pipeline}
+  \label{fig:kiviat}
+\end{figure}
+
+\subsection{Interpretacion de resultados}
+Analizar los valores obtenidos: que areas del codigo estan bien, cuales
+podrian mejorarse, y como se comparan con los rangos aceptables.
+
+\section{Metricas con SonarQube}
+SonarQube complementa a Source Monitor incorporando metricas de calidad
+orientadas a la norma ISO/IEC 25010 (mantenibilidad, fiabilidad, seguridad
+y eficiencia), ademas de indicadores de duplicacion de codigo, code smells,
+cobertura de pruebas y deuda tecnica. Mientras que Source Monitor mide
+metrica interna del codigo fuente, SonarQube las interpreta dentro de
+atributos de calidad externos.
+
+\subsection{Metricas manejadas por SonarQube}
+\begin{itemize}
+  \item Complejidad ciclomatica y distribucion por metodo.
+  \item Cobertura de codigo por lineas y por ramas.
+  \item Code Smells: malos olores de codigo que afectan la mantenibilidad.
+  \item Duplicacion: porcentaje de lineas duplicadas.
+  \item Deuda tecnica y Maintainability Rating (A - E) segun ISO 25010.
+  \item Vulnerabilidades y reglas de seguridad (fiabilidad/seguridad).
+\end{itemize}
+
+\subsection{Resultados obtenidos con SonarQube}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Metrica} & \textbf{Valor} & \textbf{Rango aceptable} \\
+    \midrule
+    Maintainability Rating (A-E) & & \\
+    Reliability Rating (A-E) & & \\
+    Security Rating (A-E) & & \\
+    Complejidad Ciclomatica & & \\
+    Cobertura (\%) & & \\
+    Lineas duplicadas (\%) & & \\
+    Deuda tecnica (horas) & & \\
+    Code Smells & & \\
+    \bottomrule
+  \end{tabular}
+  \caption{Metricas obtenidas con SonarQube}
+\end{table}
+
+\subsection{Interpretacion de resultados (SonarQube)}
+Relacionar los ratings de SonarQube con las caracteristicas de calidad de la
+ISO 25010 y comparar con las metricas de Source Monitor para el mismo codigo.
+
+\section{Comparacion Source Monitor vs SonarQube}
+Comparar el tipo de metricas que maneja cada herramienta: alcance,
+granularidad, relacion con las normas de calidad y que aspectos del codigo
+cubre cada una.
+
+\section{Conclusiones}
+Cerrar con las conclusiones del grupo sobre la experiencia de aplicar
+metricas de software (Source Monitor y SonarQube) y la calidad del codigo
+desarrollado.
+
+\end{document}
