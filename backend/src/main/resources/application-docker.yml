@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/gfcdb
+    driver-class-name: org.postgresql.Driver
+    username: gfc
+    password: gfc
+
+  jpa:
+    hibernate:
+      ddl-auto: update
