@@ -65,9 +65,9 @@ backend/
 | Capa | Tecnologia | Puerto |
 |------|-----------|--------|
 | Backend | Java 21 + Spring Boot 3.3 + Spring Security + JWT | 8080 |
-| Base de datos | H2 en archivo (`backend/data/gfcdb.mv.db`) | - |
+| Base de datos | H2 en archivo (`backend/data/gfcdb.mv.db`, no requiere servicio externo) | - |
 | Frontend | Astro 7.3 + Tailwind CSS v4 (en desarrollo, rama `front`) | 4321 |
-| Contenedor | Docker (Dockerfile multi-stage, build Maven → JRE Alpine) | 8080 |
+| Contenedor | Docker + Docker Compose (Dockerfile multi-stage, build Maven → JRE Alpine) | 8080 |
 
 ### Frontend (rama `front`)
 
@@ -91,6 +91,11 @@ mvn spring-boot:run
 cd frontend
 corepack pnpm install
 corepack pnpm dev
+```
+
+**Con Docker Compose** (backend + frontend):
+```bash
+docker compose up --build
 ```
 
 - Backend: http://localhost:8080
