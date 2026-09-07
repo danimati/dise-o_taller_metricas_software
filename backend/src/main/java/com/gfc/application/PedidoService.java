@@ -69,6 +69,14 @@ public class PedidoService {
         return mapearResumen(pedido);
     }
 
+    @Transactional(readOnly = true)
+    public List<ResumenPedidoResponse> listarPedidos(String nombreUsuarioCliente) {
+        clienteRepository.findByNombreUsuario(nombreUsuarioCliente)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado"));
+        return pedidoRepository.findByClienteNombreUsuarioOrderByFechaDesc(nombreUsuarioCliente)
+                .stream().map(this::mapearResumen).toList();
+    }
+
     /** Carga la comida y arma el detalle con sus personalizaciones a partir del request. */
     private DetallePedido construirDetalle(CrearPedidoRequest.DetalleRequest request) {
         Comida comida = comidaRepository.findById(request.comidaId())

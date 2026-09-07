@@ -5,6 +5,7 @@ import com.gfc.web.dto.CrearPedidoRequest;
 import com.gfc.web.dto.ResumenPedidoResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,5 +31,10 @@ public class PedidoController {
                                                          Authentication authentication) {
         ResumenPedidoResponse resumen = pedidoService.crearPedido(authentication.getName(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(resumen);
+    }
+
+    @GetMapping
+    public ResponseEntity<java.util.List<ResumenPedidoResponse>> listar(Authentication authentication) {
+        return ResponseEntity.ok(pedidoService.listarPedidos(authentication.getName()));
     }
 }
