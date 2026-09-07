@@ -7,7 +7,7 @@
 - **Juan Diego Peralta Barbosa** - 20231020146
 
 ## Sobre el proyecto
-Aplicacion CRUD para la gestion de una empresa de comidas rapidas, desarrollada como parte del Taller de Metricas de Software.
+Sistema de pedidos de comida rapida (catalogo personalizable, carrito, roles CLIENTE/EMPLEADO e inventario), desarrollado como parte del Taller de Metricas de Software.
 
 ## Entregables
 1. Codigo fuente de la aplicacion (Java + Astro)
