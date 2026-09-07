@@ -19,12 +19,30 @@ def parse_metrics(xml_file):
     tree = ET.parse(xml_file)
     root = tree.getroot()
     metrics = {}
-    for m in root.findall(".//checkpoint/metrics/metric"):
+    sums = {"M0": 0.0, "M1": 0.0, "M5": 0.0}
+    maxs = {"M10": 0.0}
+    m13_values = []
+    for m in root.findall(".//file/metrics/metric"):
         mid = m.get("id")
         try:
-            metrics[mid] = float(m.text)
+            value = float(m.text)
         except (ValueError, TypeError):
-            metrics[mid] = 0.0
+            continue
+        if mid in sums:
+            sums[mid] += value
+        elif mid == "M10":
+            if value > maxs["M10"]:
+                maxs["M10"] = value
+        elif mid == "M13":
+            m13_values.append(value)
+    total_methods = len(root.findall(".//method_metrics/method"))
+    total_classes = sums["M5"]
+    metrics["M0"] = sums["M0"]
+    metrics["M1"] = sums["M1"]
+    metrics["M6"] = total_methods / total_classes if total_classes > 0 else 0
+    metrics["M7"] = sums["M1"] / total_methods if total_methods > 0 else 0
+    metrics["M10"] = maxs["M10"]
+    metrics["M13"] = sum(m13_values) / len(m13_values) if m13_values else 0
     return metrics
 
 
