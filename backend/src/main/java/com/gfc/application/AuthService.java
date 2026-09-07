@@ -2,6 +2,7 @@ package com.gfc.application;
 
 import com.gfc.application.exception.ConflictoDatosException;
 import com.gfc.application.exception.CredencialesInvalidasException;
+import com.gfc.application.exception.RecursoNoEncontradoException;
 import com.gfc.domain.model.Cliente;
 import com.gfc.domain.model.Usuario;
 import com.gfc.domain.port.CodificadorContrasena;
@@ -63,6 +64,9 @@ public class AuthService {
         Usuario usuario = usuarioRepository.findByNombreUsuario(request.identificador())
                 .or(() -> clienteRepository.findByEmail(request.identificador()).map(c -> (Usuario) c))
                 .orElseThrow(() -> new CredencialesInvalidasException("Usuario o contrasena incorrectos"));
+        if (!usuario.isActivo()) {
+            throw new CredencialesInvalidasException("Usuario o contrasena incorrectos");
+        }
         if (!usuario.comprobarContraseña(request.contrasena())) {
             throw new CredencialesInvalidasException("Usuario o contrasena incorrectos");
         }
@@ -77,5 +81,13 @@ public class AuthService {
         }
         return new AuthResponse(token, usuario.getNombreUsuario(), usuario.getRol().name(),
                 null, null, null, null);
+    }
+
+    @Transactional
+    public void darseDeBaja(String nombreUsuario) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+        usuario.darseDeBaja();
+        usuarioRepository.save(usuario);
     }
 }

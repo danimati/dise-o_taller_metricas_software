@@ -26,6 +26,8 @@ public class Usuario extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Rol rol;
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean activo = true;
     @Transient
     private CodificadorContrasena codificador;
 
@@ -57,4 +59,6 @@ public class Usuario extends BaseEntity {
     }
     public Rol getRol() { return rol; }
     public Long getIdUsuario() { return getId(); }
+    public boolean isActivo() { return activo; }
+    public void darseDeBaja() { this.activo = false; }
 }
