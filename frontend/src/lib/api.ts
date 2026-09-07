@@ -46,7 +46,7 @@ export type Pedido = {
 		cantidad: number;
 		personalizaciones: Array<{
 			configuracionId: number;
-			tipoAdicion: 'ADICIONAL' | 'RETIRADO';
+			tipoAdicion: 'ADICIONAL' | 'RETIRADO' | 'AGREGAR' | 'RETIRAR';
 			cantidad: number;
 		}>;
 	}>;
@@ -58,7 +58,20 @@ export type ErrorResponse = {
 	message?: string;
 };
 
-const baseUrl = 'http://localhost:8080';
+function normalizePedido(body: Pedido) {
+	return {
+		...body,
+		detalles: body.detalles.map((detalle) => ({
+			...detalle,
+			personalizaciones: detalle.personalizaciones.map((personalizacion) => ({
+				...personalizacion,
+				tipoAdicion: personalizacion.tipoAdicion === 'AGREGAR' ? 'ADICIONAL' : personalizacion.tipoAdicion === 'RETIRAR' ? 'RETIRADO' : personalizacion.tipoAdicion,
+			})),
+		})),
+	};
+}
+
+const baseUrl = import.meta.env.PUBLIC_GFC_API_URL ?? 'http://localhost:8080';
 
 function getToken() {
 	return typeof localStorage === 'undefined' ? null : localStorage.getItem('gfc_token');
@@ -102,7 +115,7 @@ export const api = {
 	getComida: (id: number) => request<ComidaDetalle>(`/api/comidas/${id}`),
 	login: (body: { identificador: string; contrasena: string }) => request<AuthResponse>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) }),
 	register: (body: Record<string, string>) => request<AuthResponse>('/api/auth/registro', { method: 'POST', body: JSON.stringify(body) }),
-	createOrder: (body: Pedido) => request<{ valorTotal?: number; total?: number; id?: number }>('/api/pedidos', { method: 'POST', body: JSON.stringify(body) }),
+	createOrder: (body: Pedido) => request<{ valorTotal?: number; total?: number; id?: number }>('/api/pedidos', { method: 'POST', body: JSON.stringify(normalizePedido(body)) }),
 	getIngredientes: () => request<Ingrediente[]>('/api/ingredientes'),
 	addInventory: (id: number, body: { cantidad: number; motivo: string; fecha?: string }) => request(`/api/ingredientes/${id}/entradas`, { method: 'POST', body: JSON.stringify(body) }),
 	removeInventory: (id: number, body: { cantidad: number; motivo: string; fecha?: string }) => request(`/api/ingredientes/${id}/salidas`, { method: 'POST', body: JSON.stringify(body) }),
