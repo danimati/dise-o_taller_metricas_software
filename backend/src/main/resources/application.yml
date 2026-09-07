@@ -26,3 +26,5 @@ gfc:
   jwt:
     secret: "cambia-este-secreto-en-produccion-taller-metricas-gfc-2026"
     expiracion-minutos: 60
+  cors:
+    allowed-origins: http://localhost:4321
