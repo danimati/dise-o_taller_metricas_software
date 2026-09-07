@@ -58,7 +58,7 @@ def generate_kiviat(metrics, output_file="kiviat.png"):
     N = len(selected)
     theta = radar_factory(N)
 
-    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection="radar"))
+    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection="polar"))
     fig.patch.set_facecolor("white")
 
     ax.set_rgrids([0.2, 0.4, 0.6, 0.8, 1.0], labels=["", "", "", "", ""], angle=90, fontsize=7)
@@ -70,7 +70,7 @@ def generate_kiviat(metrics, output_file="kiviat.png"):
     ax.set_xticks(theta)
     ax.set_xticklabels(labels, fontsize=10)
 
-    ax.set_title("GLUD Fried Chicken - Metricas SourceMonitor\nDiagrama Kivati", weight="bold", size=13, y=1.1)
+    ax.set_title("GLUD Fried Chicken - Metricas SourceMonitor\nDiagrama Kiviat", weight="bold", size=13, y=1.1)
 
     for i, (label, val, norm) in enumerate(zip(labels, values, normalized)):
         angle = theta[i]
@@ -79,7 +79,7 @@ def generate_kiviat(metrics, output_file="kiviat.png"):
     plt.tight_layout()
     plt.savefig(output_file, dpi=150, bbox_inches="tight", facecolor="white")
     plt.close()
-    print(f"Diagrama Kivati generado: {output_file}")
+    print(f"Diagrama Kiviat generado: {output_file}")
 
 
 if __name__ == "__main__":
