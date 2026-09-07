@@ -30,6 +30,24 @@ export type Ingrediente = {
 	stockActual: number;
 };
 
+export type PedidoResumen = {
+	id: number;
+	fecha: string;
+	valorTotal: number;
+	detalle: Array<{
+		comida: string;
+		cantidad: number;
+		precioUnitario: number;
+		subtotal: number;
+		personalizaciones: Array<{
+			ingrediente: string;
+			tipoAdicion: 'ADICIONAL' | 'RETIRADO';
+			cantidad: number;
+			costoAdicional: number;
+		}>;
+	}>;
+};
+
 export type AuthResponse = {
 	token: string;
 	nombreUsuario: string;
@@ -58,6 +76,12 @@ export type ErrorResponse = {
 	message?: string;
 };
 
+function normalizeTipoAdicion(tipo: Pedido['detalles'][number]['personalizaciones'][number]['tipoAdicion']) {
+	if (tipo === 'AGREGAR') return 'ADICIONAL';
+	if (tipo === 'RETIRAR') return 'RETIRADO';
+	return tipo;
+}
+
 function normalizePedido(body: Pedido) {
 	return {
 		...body,
@@ -65,7 +89,7 @@ function normalizePedido(body: Pedido) {
 			...detalle,
 			personalizaciones: detalle.personalizaciones.map((personalizacion) => ({
 				...personalizacion,
-				tipoAdicion: personalizacion.tipoAdicion === 'AGREGAR' ? 'ADICIONAL' : personalizacion.tipoAdicion === 'RETIRAR' ? 'RETIRADO' : personalizacion.tipoAdicion,
+				tipoAdicion: normalizeTipoAdicion(personalizacion.tipoAdicion),
 			})),
 		})),
 	};
@@ -97,7 +121,7 @@ export function getSession() {
 
 async function request<T>(path: string, options: RequestInit = {}) {
 	const headers = new Headers(options.headers);
-	headers.set('Content-Type', 'application/json');
+	if (options.body != null) headers.set('Content-Type', 'application/json');
 	const token = getToken();
 	if (token) headers.set('Authorization', `Bearer ${token}`);
 	const response = await fetch(`${baseUrl}${path}`, { ...options, headers });
@@ -116,8 +140,14 @@ export const api = {
 	login: (body: { identificador: string; contrasena: string }) => request<AuthResponse>('/api/auth/login', { method: 'POST', body: JSON.stringify(body) }),
 	register: (body: Record<string, string>) => request<AuthResponse>('/api/auth/registro', { method: 'POST', body: JSON.stringify(body) }),
 	createOrder: (body: Pedido) => request<{ valorTotal?: number; total?: number; id?: number }>('/api/pedidos', { method: 'POST', body: JSON.stringify(normalizePedido(body)) }),
+	getMyOrders: () => request<PedidoResumen[]>('/api/pedidos'),
 	getIngredientes: () => request<Ingrediente[]>('/api/ingredientes'),
 	addInventory: (id: number, body: { cantidad: number; motivo: string; fecha?: string }) => request(`/api/ingredientes/${id}/entradas`, { method: 'POST', body: JSON.stringify(body) }),
 	removeInventory: (id: number, body: { cantidad: number; motivo: string; fecha?: string }) => request(`/api/ingredientes/${id}/salidas`, { method: 'POST', body: JSON.stringify(body) }),
-	getTopComidas: async () => [{ nombre: 'Combo GFC Crunch', pedidos: 38 }, { nombre: 'Alitas Picantes', pedidos: 29 }, { nombre: 'Papas Kimchi', pedidos: 21 }],
 };
+
+export const topComidasDemo = [
+	{ nombre: 'Combo GFC Crunch', pedidos: 38 },
+	{ nombre: 'Alitas Picantes', pedidos: 29 },
+	{ nombre: 'Papas Kimchi', pedidos: 21 },
+];
