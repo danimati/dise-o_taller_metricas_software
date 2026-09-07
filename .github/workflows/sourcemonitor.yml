@@ -5,6 +5,9 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
 jobs:
   metrics:
     runs-on: windows-latest
@@ -58,21 +61,21 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Generar diagrama Kivati
+      - name: Generar diagrama Kiviat
         run: |
           pip install matplotlib numpy
           python scripts/generate_kiviat.py metrics.xml kiviat.png
 
-      - name: Subir diagrama Kivati
+      - name: Subir diagrama Kiviat
         uses: actions/upload-artifact@v4
         with:
-          name: kivati-diagram
+          name: kiviat-diagram
           path: kiviat.png
 
       - name: Crear release con diagrama
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            kivati.png
+            kiviat.png
             metrics.xml
           generate_release_notes: true
