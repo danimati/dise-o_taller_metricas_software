@@ -56,9 +56,11 @@ class PedidoServiceIntegrationTest {
     private Ingrediente queso;
     private Comida hamburguesa;
     private ConfiguracionIngrediente configQueso;
+    private long movimientosIniciales;
 
     @BeforeEach
     void setUp() {
+        movimientosIniciales = movimientoInventarioRepository.count();
         cliente = clienteRepository.save(new Cliente(
                 null, "test-cliente", "pass123", TipoDocumento.CC,
                 "9999999999", "test@test.com", "Test Cliente", codificador));
@@ -84,7 +86,7 @@ class PedidoServiceIntegrationTest {
         Ingrediente quesoRecargado = ingredienteRepository.findById(queso.getId()).orElseThrow();
         assertEquals(48, quesoRecargado.getStockActual());
 
-        assertEquals(1, movimientoInventarioRepository.findAll().size());
+        assertEquals(1, movimientoInventarioRepository.findAll().size() - movimientosIniciales);
     }
 
     @Test
@@ -103,7 +105,7 @@ class PedidoServiceIntegrationTest {
 
         Ingrediente poquitoRecargado = ingredienteRepository.findById(poquito.getId()).orElseThrow();
         assertEquals(1, poquitoRecargado.getStockActual());
-        assertEquals(0, movimientoInventarioRepository.count());
+        assertEquals(0, movimientoInventarioRepository.count() - movimientosIniciales);
     }
 
     @Test
