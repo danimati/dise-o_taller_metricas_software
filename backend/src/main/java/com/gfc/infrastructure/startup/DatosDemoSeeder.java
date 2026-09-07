@@ -84,14 +84,22 @@ public class DatosDemoSeeder implements CommandLineRunner {
         Ingrediente salsaTomate = ingredienteRepository.save(new Ingrediente(null, "Salsa de tomate", 5000, UnidadMedida.MILILITRO));
         Ingrediente papas = ingredienteRepository.save(new Ingrediente(null, "Papas", 5000, UnidadMedida.GRAMO));
         Ingrediente pepperoni = ingredienteRepository.save(new Ingrediente(null, "Pepperoni", 1000, UnidadMedida.GRAMO));
+        Ingrediente pepinillos = ingredienteRepository.save(new Ingrediente(null, "Pepinillos", 100, UnidadMedida.UNIDAD));
         Ingrediente masa = ingredienteRepository.save(new Ingrediente(null, "Masa", 50, UnidadMedida.UNIDAD));
+        Ingrediente tocineta = ingredienteRepository.save(new Ingrediente(null, "Tocineta", 1000, UnidadMedida.GRAMO));
+        Ingrediente champinones = ingredienteRepository.save(new Ingrediente(null, "Champiñones", 1000, UnidadMedida.GRAMO));
+        Ingrediente jalapenos = ingredienteRepository.save(new Ingrediente(null, "Jalapeños", 500, UnidadMedida.GRAMO));
+        Ingrediente pollo = ingredienteRepository.save(new Ingrediente(null, "Pollo desmechado", 3000, UnidadMedida.GRAMO));
 
         Comida hamburguesa = new Comida(null, "Hamburguesa Clasica", new BigDecimal("18000"), null);
         hamburguesa.configurarIngrediente(null, pan, 1, true, true, true, new BigDecimal("2000"));
-        hamburguesa.configurarIngrediente(null, carneRes, 200, true, true, true, new BigDecimal("4000"));
+        hamburguesa.configurarIngrediente(null, carneRes, 200, true, true, false, new BigDecimal("4000"));
         hamburguesa.configurarIngrediente(null, queso, 2, true, true, true, new BigDecimal("1500"));
         hamburguesa.configurarIngrediente(null, lechuga, 1, true, true, true, new BigDecimal("500"));
         hamburguesa.configurarIngrediente(null, tomate, 100, true, true, true, new BigDecimal("500"));
+        hamburguesa.configurarIngrediente(null, pepinillos, 1, true, true, true, new BigDecimal("500"));
+        hamburguesa.configurarIngrediente(null, tocineta, 0, false, true, false, new BigDecimal("2500"));
+        hamburguesa.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
         comidaRepository.save(hamburguesa);
 
         Comida perroCaliente = new Comida(null, "Perro Caliente", new BigDecimal("12000"), null);
@@ -108,13 +116,18 @@ public class DatosDemoSeeder implements CommandLineRunner {
         pizza.configurarIngrediente(null, salsaTomate, 50, true, true, true, new BigDecimal("1000"));
         pizza.configurarIngrediente(null, pepperoni, 100, true, true, true, new BigDecimal("3000"));
         pizza.configurarIngrediente(null, cebolla, 50, false, true, false, new BigDecimal("500"));
+        pizza.configurarIngrediente(null, champinones, 80, false, true, false, new BigDecimal("1500"));
+        pizza.configurarIngrediente(null, jalapenos, 40, false, true, false, new BigDecimal("800"));
+        pizza.configurarIngrediente(null, pollo, 100, false, true, false, new BigDecimal("2500"));
         comidaRepository.save(pizza);
 
         Comida papasFrancesa = new Comida(null, "Papas a la Francesa", new BigDecimal("9000"), null);
         papasFrancesa.configurarIngrediente(null, papas, 300, true, true, true, new BigDecimal("2000"));
         papasFrancesa.configurarIngrediente(null, salsaTomate, 40, true, true, true, new BigDecimal("500"));
+        papasFrancesa.configurarIngrediente(null, queso, 1, false, true, false, new BigDecimal("1500"));
+        papasFrancesa.configurarIngrediente(null, tocineta, 80, false, true, false, new BigDecimal("2000"));
         comidaRepository.save(papasFrancesa);
 
-        log.info("Catalogo demo creado: 4 comidas, 11 ingredientes");
+        log.info("Catalogo demo creado: 4 comidas, 12 ingredientes");
     }
 }

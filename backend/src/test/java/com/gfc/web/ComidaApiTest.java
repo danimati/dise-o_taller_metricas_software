@@ -33,7 +33,7 @@ class ComidaApiTest {
                 .andExpect(jsonPath("$.nombre").isNotEmpty())
                 .andExpect(jsonPath("$.precio").isNumber())
                 .andExpect(jsonPath("$.ingredientes").isArray())
-                .andExpect(jsonPath("$.ingredientes.length()").value(5));
+                .andExpect(jsonPath("$.ingredientes.length()").value(6));
     }
 
     @Test
