@@ -52,4 +52,12 @@ public class Ingrediente extends BaseEntity {
     public String getNombreIngrediente() { return nombreIngrediente; }
     public int getStockActual() { return stockActual; }
     public UnidadMedida getUnidadMedida() { return unidadMedida; }
+
+    public void actualizarNombre(String nombre) {
+        this.nombreIngrediente = Validaciones.texto(nombre, "nombreIngrediente");
+    }
+
+    public void actualizarUnidadMedida(UnidadMedida unidad) {
+        this.unidadMedida = Objects.requireNonNull(unidad, "unidadMedida");
+    }
 }

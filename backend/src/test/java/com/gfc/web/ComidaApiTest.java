@@ -22,7 +22,7 @@ class ComidaApiTest {
         mockMvc.perform(get("/api/comidas"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(4));
+                .andExpect(jsonPath("$.length()").value(12));
     }
 
     @Test
@@ -33,7 +33,7 @@ class ComidaApiTest {
                 .andExpect(jsonPath("$.nombre").isNotEmpty())
                 .andExpect(jsonPath("$.precio").isNumber())
                 .andExpect(jsonPath("$.ingredientes").isArray())
-                .andExpect(jsonPath("$.ingredientes.length()").value(6));
+                .andExpect(jsonPath("$.ingredientes.length()").value(8));
     }
 
     @Test

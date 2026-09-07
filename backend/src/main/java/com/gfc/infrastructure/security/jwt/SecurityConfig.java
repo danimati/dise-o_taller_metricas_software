@@ -37,6 +37,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/comidas/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/comidas/**").hasRole("EMPLEADO")
+                        .requestMatchers(HttpMethod.PUT, "/api/comidas/**").hasRole("EMPLEADO")
+                        .requestMatchers(HttpMethod.DELETE, "/api/comidas/**").hasRole("EMPLEADO")
+                        .requestMatchers("/api/cuenta/**").authenticated()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/error").permitAll()

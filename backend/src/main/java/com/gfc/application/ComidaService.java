@@ -1,25 +1,80 @@
 package com.gfc.application;
 
+import com.gfc.application.exception.ConflictoDatosException;
 import com.gfc.application.exception.RecursoNoEncontradoException;
 import com.gfc.domain.model.Comida;
 import com.gfc.domain.model.ConfiguracionIngrediente;
 import com.gfc.infrastructure.persistence.ComidaRepository;
+import com.gfc.infrastructure.persistence.DetallePedidoRepository;
+import com.gfc.infrastructure.persistence.IngredienteRepository;
 import com.gfc.web.dto.ComidaDetalleResponse;
 import com.gfc.web.dto.ComidaResumenResponse;
+import com.gfc.web.dto.CrearComidaRequest;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** Consulta de solo lectura del catalogo publico de comidas. */
 @Service
 public class ComidaService {
     private final ComidaRepository comidaRepository;
+    private final IngredienteRepository ingredienteRepository;
+    private final DetallePedidoRepository detallePedidoRepository;
 
-    public ComidaService(ComidaRepository comidaRepository) {
+    public ComidaService(ComidaRepository comidaRepository, IngredienteRepository ingredienteRepository,
+                          DetallePedidoRepository detallePedidoRepository) {
         this.comidaRepository = comidaRepository;
+        this.ingredienteRepository = ingredienteRepository;
+        this.detallePedidoRepository = detallePedidoRepository;
     }
 
-    /** @return todas las comidas del catalogo, sin paginacion. */
+    @Transactional
+    public ComidaResumenResponse crear(CrearComidaRequest request) {
+        Comida comida = new Comida(null, request.nombre(), request.precio(), request.imagenURL());
+        for (var config : request.ingredientes()) {
+            var ingrediente = ingredienteRepository.findById(config.ingredienteId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "El ingrediente " + config.ingredienteId() + " no existe"));
+            comida.configurarIngrediente(null, ingrediente, config.cantidadBase(),
+                    config.incluidoPorDefecto(), config.permiteAdicional(),
+                    config.permiteRetirar(), config.precioAdicional());
+        }
+        Comida guardada = comidaRepository.save(comida);
+        return new ComidaResumenResponse(guardada.getId(), guardada.getNombre(),
+                guardada.getPrecio(), guardada.getImagenURL());
+    }
+
+    @Transactional
+    public ComidaResumenResponse actualizar(Long id, CrearComidaRequest request) {
+        Comida comida = comidaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("La comida " + id + " no existe"));
+        comida.actualizarNombre(request.nombre());
+        comida.actualizarPrecio(request.precio());
+        comida.actualizarImagenURL(request.imagenURL());
+        comida.limpiarIngredientes();
+        for (var config : request.ingredientes()) {
+            var ingrediente = ingredienteRepository.findById(config.ingredienteId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "El ingrediente " + config.ingredienteId() + " no existe"));
+            comida.configurarIngrediente(null, ingrediente, config.cantidadBase(),
+                    config.incluidoPorDefecto(), config.permiteAdicional(),
+                    config.permiteRetirar(), config.precioAdicional());
+        }
+        Comida guardada = comidaRepository.save(comida);
+        return new ComidaResumenResponse(guardada.getId(), guardada.getNombre(),
+                guardada.getPrecio(), guardada.getImagenURL());
+    }
+
+    @Transactional
+    public void eliminar(Long id) {
+        if (!comidaRepository.existsById(id)) {
+            throw new RecursoNoEncontradoException("La comida " + id + " no existe");
+        }
+        if (detallePedidoRepository.existsByComidaId(id)) {
+            throw new ConflictoDatosException("La comida no se puede eliminar: tiene pedidos asociados");
+        }
+        comidaRepository.deleteById(id);
+    }
+
     @Transactional(readOnly = true)
     public List<ComidaResumenResponse> listar() {
         return comidaRepository.findAll().stream()
@@ -27,7 +82,6 @@ public class ComidaService {
                 .toList();
     }
 
-    /** @throws RecursoNoEncontradoException si no existe una comida con ese id. */
     @Transactional(readOnly = true)
     public ComidaDetalleResponse obtener(Long id) {
         Comida comida = comidaRepository.findById(id)

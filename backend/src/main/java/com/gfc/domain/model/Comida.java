@@ -22,7 +22,7 @@ public class Comida extends BaseEntity {
     private String nombre;
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal precio;
-    @OneToMany(mappedBy = "comida", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comida", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<ConfiguracionIngrediente> ingredientes = new ArrayList<>();
 
@@ -56,4 +56,20 @@ public class Comida extends BaseEntity {
     public String getNombre() { return nombre; }
     public BigDecimal getPrecio() { return precio; }
     public List<ConfiguracionIngrediente> getIngredientes() { return List.copyOf(ingredientes); }
+
+    public void actualizarNombre(String nombre) {
+        this.nombre = Validaciones.texto(nombre, "nombre");
+    }
+
+    public void actualizarPrecio(BigDecimal precio) {
+        this.precio = Validaciones.dinero(precio, "precio");
+    }
+
+    public void actualizarImagenURL(String imagenURL) {
+        this.imagenURL = imagenURL;
+    }
+
+    public void limpiarIngredientes() {
+        ingredientes.clear();
+    }
 }

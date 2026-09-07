@@ -51,8 +51,8 @@ class DatosDemoSeederTest {
     }
 
     @Test
-    void catalogoContieneCuatroComidas() {
-        assertTrue(comidaRepository.count() >= 4);
+    void catalogoContieneDoceComidas() {
+        assertTrue(comidaRepository.count() >= 12);
     }
 
     @Test

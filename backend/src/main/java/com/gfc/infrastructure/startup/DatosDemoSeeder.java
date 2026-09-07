@@ -87,47 +87,125 @@ public class DatosDemoSeeder implements CommandLineRunner {
         Ingrediente pepinillos = ingredienteRepository.save(new Ingrediente(null, "Pepinillos", 100, UnidadMedida.UNIDAD));
         Ingrediente masa = ingredienteRepository.save(new Ingrediente(null, "Masa", 50, UnidadMedida.UNIDAD));
         Ingrediente tocineta = ingredienteRepository.save(new Ingrediente(null, "Tocineta", 1000, UnidadMedida.GRAMO));
-        Ingrediente champinones = ingredienteRepository.save(new Ingrediente(null, "Champiñones", 1000, UnidadMedida.GRAMO));
-        Ingrediente jalapenos = ingredienteRepository.save(new Ingrediente(null, "Jalapeños", 500, UnidadMedida.GRAMO));
+        Ingrediente champinones = ingredienteRepository.save(new Ingrediente(null, "Championes", 1000, UnidadMedida.GRAMO));
+        Ingrediente jalapenos = ingredienteRepository.save(new Ingrediente(null, "Jalapenos", 500, UnidadMedida.GRAMO));
         Ingrediente pollo = ingredienteRepository.save(new Ingrediente(null, "Pollo desmechado", 3000, UnidadMedida.GRAMO));
+        Ingrediente pina = ingredienteRepository.save(new Ingrediente(null, "Pina", 50, UnidadMedida.UNIDAD));
+        Ingrediente alitas = ingredienteRepository.save(new Ingrediente(null, "Alitas", 100, UnidadMedida.UNIDAD));
+        Ingrediente salsaPicante = ingredienteRepository.save(new Ingrediente(null, "Salsa picante", 2000, UnidadMedida.MILILITRO));
 
-        Comida hamburguesa = new Comida(null, "Hamburguesa Clasica", new BigDecimal("18000"), null);
-        hamburguesa.configurarIngrediente(null, pan, 1, true, true, true, new BigDecimal("2000"));
-        hamburguesa.configurarIngrediente(null, carneRes, 200, true, true, false, new BigDecimal("4000"));
-        hamburguesa.configurarIngrediente(null, queso, 2, true, true, true, new BigDecimal("1500"));
-        hamburguesa.configurarIngrediente(null, lechuga, 1, true, true, true, new BigDecimal("500"));
-        hamburguesa.configurarIngrediente(null, tomate, 100, true, true, true, new BigDecimal("500"));
-        hamburguesa.configurarIngrediente(null, pepinillos, 1, true, true, true, new BigDecimal("500"));
-        hamburguesa.configurarIngrediente(null, tocineta, 0, false, true, false, new BigDecimal("2500"));
-        hamburguesa.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
-        comidaRepository.save(hamburguesa);
+        Comida hamburguesaClasica = new Comida(null, "Hamburguesa Clasica", new BigDecimal("18000"), "/imagenes/hamburguesa-clasica.webp");
+        hamburguesaClasica.configurarIngrediente(null, pan, 1, true, false, false, new BigDecimal("0"));
+        hamburguesaClasica.configurarIngrediente(null, carneRes, 200, true, true, false, new BigDecimal("4000"));
+        hamburguesaClasica.configurarIngrediente(null, queso, 2, true, true, true, new BigDecimal("1500"));
+        hamburguesaClasica.configurarIngrediente(null, lechuga, 1, true, true, true, new BigDecimal("500"));
+        hamburguesaClasica.configurarIngrediente(null, tomate, 100, true, true, true, new BigDecimal("500"));
+        hamburguesaClasica.configurarIngrediente(null, pepinillos, 1, true, true, true, new BigDecimal("500"));
+        hamburguesaClasica.configurarIngrediente(null, tocineta, 0, false, true, false, new BigDecimal("2500"));
+        hamburguesaClasica.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(hamburguesaClasica);
 
-        Comida perroCaliente = new Comida(null, "Perro Caliente", new BigDecimal("12000"), null);
-        perroCaliente.configurarIngrediente(null, pan, 1, true, true, true, new BigDecimal("1500"));
-        perroCaliente.configurarIngrediente(null, salchicha, 1, true, true, true, new BigDecimal("2000"));
-        perroCaliente.configurarIngrediente(null, queso, 1, true, true, true, new BigDecimal("1000"));
-        perroCaliente.configurarIngrediente(null, cebolla, 50, true, true, true, new BigDecimal("500"));
-        perroCaliente.configurarIngrediente(null, salsaTomate, 30, true, true, true, new BigDecimal("500"));
-        comidaRepository.save(perroCaliente);
+        Comida hamburguesaTocineta = new Comida(null, "Hamburguesa Tocineta", new BigDecimal("24000"), "/imagenes/hamburguesa-tocineta.webp");
+        hamburguesaTocineta.configurarIngrediente(null, pan, 1, true, false, false, new BigDecimal("0"));
+        hamburguesaTocineta.configurarIngrediente(null, carneRes, 200, true, true, false, new BigDecimal("4000"));
+        hamburguesaTocineta.configurarIngrediente(null, tocineta, 80, true, true, true, new BigDecimal("2500"));
+        hamburguesaTocineta.configurarIngrediente(null, queso, 1, true, true, true, new BigDecimal("1500"));
+        hamburguesaTocineta.configurarIngrediente(null, lechuga, 1, true, true, true, new BigDecimal("500"));
+        hamburguesaTocineta.configurarIngrediente(null, tomate, 100, true, true, true, new BigDecimal("500"));
+        hamburguesaTocineta.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(hamburguesaTocineta);
 
-        Comida pizza = new Comida(null, "Pizza Personal", new BigDecimal("22000"), null);
-        pizza.configurarIngrediente(null, masa, 1, true, true, true, new BigDecimal("3000"));
-        pizza.configurarIngrediente(null, queso, 3, true, true, true, new BigDecimal("2000"));
-        pizza.configurarIngrediente(null, salsaTomate, 50, true, true, true, new BigDecimal("1000"));
-        pizza.configurarIngrediente(null, pepperoni, 100, true, true, true, new BigDecimal("3000"));
-        pizza.configurarIngrediente(null, cebolla, 50, false, true, false, new BigDecimal("500"));
-        pizza.configurarIngrediente(null, champinones, 80, false, true, false, new BigDecimal("1500"));
-        pizza.configurarIngrediente(null, jalapenos, 40, false, true, false, new BigDecimal("800"));
-        pizza.configurarIngrediente(null, pollo, 100, false, true, false, new BigDecimal("2500"));
-        comidaRepository.save(pizza);
+        Comida hamburguesaHawaiana = new Comida(null, "Hamburguesa Hawaiana", new BigDecimal("23000"), "/imagenes/hamburguesa-hawaiana.webp");
+        hamburguesaHawaiana.configurarIngrediente(null, pan, 1, true, false, false, new BigDecimal("0"));
+        hamburguesaHawaiana.configurarIngrediente(null, carneRes, 200, true, true, false, new BigDecimal("4000"));
+        hamburguesaHawaiana.configurarIngrediente(null, pina, 1, true, true, true, new BigDecimal("1000"));
+        hamburguesaHawaiana.configurarIngrediente(null, queso, 1, true, true, true, new BigDecimal("1500"));
+        hamburguesaHawaiana.configurarIngrediente(null, lechuga, 1, true, true, true, new BigDecimal("500"));
+        hamburguesaHawaiana.configurarIngrediente(null, tomate, 100, true, true, true, new BigDecimal("500"));
+        hamburguesaHawaiana.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(hamburguesaHawaiana);
 
-        Comida papasFrancesa = new Comida(null, "Papas a la Francesa", new BigDecimal("9000"), null);
-        papasFrancesa.configurarIngrediente(null, papas, 300, true, true, true, new BigDecimal("2000"));
+        Comida perroClasico = new Comida(null, "Perro Caliente Clasico", new BigDecimal("12000"), "/imagenes/perro-clasico.webp");
+        perroClasico.configurarIngrediente(null, pan, 1, true, false, false, new BigDecimal("0"));
+        perroClasico.configurarIngrediente(null, salchicha, 1, true, true, false, new BigDecimal("2000"));
+        perroClasico.configurarIngrediente(null, queso, 1, true, true, true, new BigDecimal("1000"));
+        perroClasico.configurarIngrediente(null, cebolla, 50, true, true, true, new BigDecimal("500"));
+        perroClasico.configurarIngrediente(null, salsaTomate, 30, true, true, true, new BigDecimal("500"));
+        perroClasico.configurarIngrediente(null, tocineta, 0, false, true, false, new BigDecimal("2000"));
+        comidaRepository.save(perroClasico);
+
+        Comida perroTocino = new Comida(null, "Perro Caliente Tocino", new BigDecimal("16000"), "/imagenes/perro-tocino.webp");
+        perroTocino.configurarIngrediente(null, pan, 1, true, false, false, new BigDecimal("0"));
+        perroTocino.configurarIngrediente(null, salchicha, 1, true, true, false, new BigDecimal("2000"));
+        perroTocino.configurarIngrediente(null, tocineta, 50, true, true, true, new BigDecimal("2000"));
+        perroTocino.configurarIngrediente(null, queso, 1, true, true, true, new BigDecimal("1000"));
+        perroTocino.configurarIngrediente(null, cebolla, 50, true, true, true, new BigDecimal("500"));
+        perroTocino.configurarIngrediente(null, salsaTomate, 30, true, true, true, new BigDecimal("500"));
+        comidaRepository.save(perroTocino);
+
+        Comida pizzaPersonal = new Comida(null, "Pizza Personal", new BigDecimal("22000"), "/imagenes/pizza-personal.webp");
+        pizzaPersonal.configurarIngrediente(null, masa, 1, true, false, false, new BigDecimal("0"));
+        pizzaPersonal.configurarIngrediente(null, queso, 3, true, true, true, new BigDecimal("2000"));
+        pizzaPersonal.configurarIngrediente(null, salsaTomate, 50, true, true, true, new BigDecimal("1000"));
+        pizzaPersonal.configurarIngrediente(null, pepperoni, 100, true, true, true, new BigDecimal("3000"));
+        pizzaPersonal.configurarIngrediente(null, cebolla, 0, false, true, false, new BigDecimal("500"));
+        pizzaPersonal.configurarIngrediente(null, champinones, 0, false, true, false, new BigDecimal("1500"));
+        pizzaPersonal.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        pizzaPersonal.configurarIngrediente(null, pollo, 0, false, true, false, new BigDecimal("2500"));
+        comidaRepository.save(pizzaPersonal);
+
+        Comida pizzaHawaiana = new Comida(null, "Pizza Hawaiana", new BigDecimal("26000"), "/imagenes/pizza-hawaiana.webp");
+        pizzaHawaiana.configurarIngrediente(null, masa, 1, true, false, false, new BigDecimal("0"));
+        pizzaHawaiana.configurarIngrediente(null, queso, 3, true, true, true, new BigDecimal("2000"));
+        pizzaHawaiana.configurarIngrediente(null, salsaTomate, 50, true, true, true, new BigDecimal("1000"));
+        pizzaHawaiana.configurarIngrediente(null, pina, 1, true, true, true, new BigDecimal("1000"));
+        pizzaHawaiana.configurarIngrediente(null, pollo, 100, true, true, true, new BigDecimal("2500"));
+        pizzaHawaiana.configurarIngrediente(null, champinones, 0, false, true, false, new BigDecimal("1500"));
+        pizzaHawaiana.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(pizzaHawaiana);
+
+        Comida pizzaVegetariana = new Comida(null, "Pizza Vegetariana", new BigDecimal("20000"), "/imagenes/pizza-vegetariana.webp");
+        pizzaVegetariana.configurarIngrediente(null, masa, 1, true, false, false, new BigDecimal("0"));
+        pizzaVegetariana.configurarIngrediente(null, queso, 3, true, true, true, new BigDecimal("2000"));
+        pizzaVegetariana.configurarIngrediente(null, salsaTomate, 50, true, true, true, new BigDecimal("1000"));
+        pizzaVegetariana.configurarIngrediente(null, champinones, 80, true, true, true, new BigDecimal("1500"));
+        pizzaVegetariana.configurarIngrediente(null, cebolla, 50, true, true, true, new BigDecimal("500"));
+        pizzaVegetariana.configurarIngrediente(null, jalapenos, 40, true, true, true, new BigDecimal("800"));
+        comidaRepository.save(pizzaVegetariana);
+
+        Comida papasFrancesa = new Comida(null, "Papas a la Francesa", new BigDecimal("9000"), "/imagenes/papas-francesa.webp");
+        papasFrancesa.configurarIngrediente(null, papas, 300, true, false, false, new BigDecimal("0"));
         papasFrancesa.configurarIngrediente(null, salsaTomate, 40, true, true, true, new BigDecimal("500"));
-        papasFrancesa.configurarIngrediente(null, queso, 1, false, true, false, new BigDecimal("1500"));
-        papasFrancesa.configurarIngrediente(null, tocineta, 80, false, true, false, new BigDecimal("2000"));
+        papasFrancesa.configurarIngrediente(null, queso, 0, false, true, false, new BigDecimal("1500"));
+        papasFrancesa.configurarIngrediente(null, tocineta, 0, false, true, false, new BigDecimal("2000"));
+        papasFrancesa.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
         comidaRepository.save(papasFrancesa);
 
-        log.info("Catalogo demo creado: 4 comidas, 12 ingredientes");
+        Comida papasCargadas = new Comida(null, "Papas Cargadas", new BigDecimal("14000"), "/imagenes/papas-cargadas.webp");
+        papasCargadas.configurarIngrediente(null, papas, 300, true, false, false, new BigDecimal("0"));
+        papasCargadas.configurarIngrediente(null, queso, 2, true, true, true, new BigDecimal("1500"));
+        papasCargadas.configurarIngrediente(null, tocineta, 80, true, true, true, new BigDecimal("2000"));
+        papasCargadas.configurarIngrediente(null, salsaTomate, 30, true, true, true, new BigDecimal("500"));
+        papasCargadas.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(papasCargadas);
+
+        Comida alitasPicantes = new Comida(null, "Alitas Picantes", new BigDecimal("21000"), "/imagenes/alitas-picantes.webp");
+        alitasPicantes.configurarIngrediente(null, alitas, 6, true, false, false, new BigDecimal("0"));
+        alitasPicantes.configurarIngrediente(null, salsaPicante, 40, true, true, true, new BigDecimal("1000"));
+        alitasPicantes.configurarIngrediente(null, cebolla, 30, true, true, true, new BigDecimal("500"));
+        alitasPicantes.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(alitasPicantes);
+
+        Comida comboGfcCrunch = new Comida(null, "Combo GFC Crunch", new BigDecimal("28000"), "/imagenes/combo-gfc-crunch.webp");
+        comboGfcCrunch.configurarIngrediente(null, pan, 1, true, false, false, new BigDecimal("0"));
+        comboGfcCrunch.configurarIngrediente(null, carneRes, 200, true, true, false, new BigDecimal("4000"));
+        comboGfcCrunch.configurarIngrediente(null, queso, 1, true, true, true, new BigDecimal("1500"));
+        comboGfcCrunch.configurarIngrediente(null, papas, 200, true, true, true, new BigDecimal("2000"));
+        comboGfcCrunch.configurarIngrediente(null, salsaTomate, 30, true, true, true, new BigDecimal("500"));
+        comboGfcCrunch.configurarIngrediente(null, tocineta, 0, false, true, false, new BigDecimal("2500"));
+        comboGfcCrunch.configurarIngrediente(null, jalapenos, 0, false, true, false, new BigDecimal("800"));
+        comidaRepository.save(comboGfcCrunch);
+
+        log.info("Catalogo demo creado: 12 comidas, 19 ingredientes");
     }
 }
