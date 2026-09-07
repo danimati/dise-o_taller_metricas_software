@@ -74,6 +74,27 @@ export type ErrorResponse = {
 	status?: number;
 	error?: string;
 	message?: string;
+	mensaje?: string;
+};
+
+export type ComidaBody = {
+	nombre: string;
+	precio: number;
+	imagenURL?: string | null;
+	ingredientes?: Array<{
+		ingredienteId: number;
+		cantidadBase: number;
+		incluidoPorDefecto: boolean;
+		permiteAdicional: boolean;
+		permiteRetirar: boolean;
+		precioAdicional: number;
+	}>;
+};
+
+export type IngredienteBody = {
+	nombre: string;
+	unidadMedida: 'UNIDAD' | 'GRAMO' | 'MILILITRO';
+	stockActual?: number;
 };
 
 function normalizeTipoAdicion(tipo: Pedido['detalles'][number]['personalizaciones'][number]['tipoAdicion']) {
@@ -128,7 +149,7 @@ async function request<T>(path: string, options: RequestInit = {}) {
 	if (!response.ok) {
 		const error = (await response.json().catch(() => ({}))) as ErrorResponse;
 		if (response.status === 401) clearSession();
-		throw new Error(error.message || error.error || 'No pudimos completar la solicitud.');
+		throw new Error(error.mensaje || error.message || error.error || 'No pudimos completar la solicitud.');
 	}
 	if (response.status === 204) return undefined as T;
 	return (await response.json()) as T;
@@ -144,6 +165,13 @@ export const api = {
 	getIngredientes: () => request<Ingrediente[]>('/api/ingredientes'),
 	addInventory: (id: number, body: { cantidad: number; motivo: string; fecha?: string }) => request(`/api/ingredientes/${id}/entradas`, { method: 'POST', body: JSON.stringify(body) }),
 	removeInventory: (id: number, body: { cantidad: number; motivo: string; fecha?: string }) => request(`/api/ingredientes/${id}/salidas`, { method: 'POST', body: JSON.stringify(body) }),
+	createComida: (body: ComidaBody) => request<Comida>('/api/comidas', { method: 'POST', body: JSON.stringify(body) }),
+	updateComida: (id: number, body: ComidaBody) => request<Comida>(`/api/comidas/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+	deleteComida: (id: number) => request<undefined>(`/api/comidas/${id}`, { method: 'DELETE' }),
+	createIngrediente: (body: IngredienteBody) => request<Ingrediente>('/api/ingredientes', { method: 'POST', body: JSON.stringify(body) }),
+	updateIngrediente: (id: number, body: Pick<IngredienteBody, 'nombre' | 'unidadMedida'>) => request<Ingrediente>(`/api/ingredientes/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+	deleteIngrediente: (id: number) => request<undefined>(`/api/ingredientes/${id}`, { method: 'DELETE' }),
+	darseDeBaja: () => request<undefined>('/api/cuenta/baja', { method: 'POST' }),
 };
 
 export const topComidasDemo = [

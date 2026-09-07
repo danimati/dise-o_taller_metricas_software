@@ -9,5 +9,7 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 <script>
 	import { api, saveSession } from '../lib/api';
+	const bajaMessage = document.querySelector('#login-message') as HTMLElement;
+	if (new URLSearchParams(window.location.search).get('baja') === '1') { bajaMessage.textContent = 'Tu cuenta fue dada de baja. Si crees que es un error, contacta al equipo de soporte.'; bajaMessage.className = 'rounded-xl bg-green-100 p-3 text-sm font-bold text-green-800'; bajaMessage.classList.remove('hidden'); }
 	document.querySelector('#login-form')?.addEventListener('submit', async (event) => { event.preventDefault(); const form = event.currentTarget as HTMLFormElement; const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>; const message = document.querySelector('#login-message') as HTMLElement; message.classList.add('hidden'); try { const response = await api.login({ identificador: data.identificador, contrasena: data.contrasena }); saveSession(response); window.location.href = response.rol === 'EMPLEADO' ? '/dashboard' : '/'; } catch (error) { message.textContent = error instanceof Error ? error.message : 'No pudimos iniciar sesión. Revisa tus datos.'; message.classList.remove('hidden'); } });
 </script>
