@@ -16,5 +16,9 @@ Aplicacion CRUD para la gestion de una empresa de comidas rapidas, desarrollada 
 4. Documento con resultados de Source Monitor e interpretacion
 
 ## Estructura del documento
-- `docs/reporte.md` - Documento principal con resultados e interpretacion
-- `docs/diagramas/` - Diagramas de clases y casos de uso
+- `docs/reporte.tex` / `docs/reporte.pdf` - Documento principal con resultados e interpretacion
+- `docs/funcionalidades.md` - Funcionalidades ya implementadas en el backend
+- `docs/endpoints-propuestos.md` - Contrato de API propuesto a partir de los acuerdos backend-frontend
+- `postman/GFC-Backend.postman_collection.json` - Coleccion Postman ejecutable de todo el API
+- `docs/diagramas/ER.md` - Diagrama entidad-relacion del modelo persistente
+- `docs/diagramas/diagrama-clases.md` - Diagrama de clases del dominio

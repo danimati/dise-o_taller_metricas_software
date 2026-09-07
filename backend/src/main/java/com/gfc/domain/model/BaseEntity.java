@@ -13,8 +13,13 @@ public abstract class BaseEntity {
     @Version
     private Long version;
 
+    /** Requerido por Hibernate para reconstruir la entidad al leerla de la base de datos. */
     protected BaseEntity() { }
 
+    /**
+     * @param id identificador persistido, o {@code null} para una entidad nueva sin guardar.
+     * @throws IllegalArgumentException si {@code id} no es {@code null} y no es positivo.
+     */
     protected BaseEntity(Long id) {
         if (id != null && id <= 0) {
             throw new IllegalArgumentException("El id debe ser positivo");
@@ -22,6 +27,7 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
+    /** @return el identificador persistido, o {@code null} si la entidad aun no se ha guardado. */
     public Long getId() {
         return id;
     }

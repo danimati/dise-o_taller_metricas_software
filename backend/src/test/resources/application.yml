@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:gfcdb-test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+gfc:
+  jwt:
+    secret: "secreto-de-pruebas-no-usar-en-produccion-taller-metricas-gfc"
+    expiracion-minutos: 60

@@ -5,9 +5,15 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Un ajuste de stock sobre un {@link Ingrediente} (entrada, salida o ajuste con signo). Crearlo
+ * no modifica el stock; hay que llamar a {@link #aplicar()} explicitamente, y solo se puede
+ * aplicar una vez.
+ */
 @Entity
 @Table(name = "movimientos_inventario")
 public class MovimientoInventario extends BaseEntity {
+    /** Requerido por Hibernate. */
     protected MovimientoInventario() { }
 
     private int cantidad;
@@ -23,6 +29,10 @@ public class MovimientoInventario extends BaseEntity {
     private TipoMovimiento tipo;
     private boolean aplicado;
 
+    /**
+     * @param cantidad para ENTRADA/SALIDA debe ser positiva; para AJUSTE es una diferencia con
+     *                 signo (positiva suma, negativa resta) y no puede ser cero.
+     */
     public MovimientoInventario(Long id, Ingrediente ingrediente, int cantidad,
                                 LocalDateTime fecha, String motivo, TipoMovimiento tipo) {
         super(id);

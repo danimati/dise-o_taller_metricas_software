@@ -5,10 +5,15 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Como un {@link Ingrediente} participa en la receta de una {@link Comida}: cuanta cantidad base
+ * trae por defecto y si el cliente puede agregarlo o retirarlo al personalizar un pedido.
+ */
 @Entity
 @Table(name = "configuraciones_ingrediente", uniqueConstraints =
         @UniqueConstraint(columnNames = {"comida_id", "ingrediente_id"}))
 public class ConfiguracionIngrediente extends BaseEntity {
+    /** Requerido por Hibernate. */
     protected ConfiguracionIngrediente() { }
 
     private int cantidadBase;
@@ -44,6 +49,7 @@ public class ConfiguracionIngrediente extends BaseEntity {
         this.precioAdicional = Validaciones.dinero(precioAdicional, "precioAdicional");
     }
 
+    /** @return true si esta configuracion admite el tipo de personalizacion indicado. */
     public boolean permitePersonalizacion(TipoPersonalizacion tipo) {
         return switch (Objects.requireNonNull(tipo, "tipo")) {
             case ADICIONAL -> permiteAdicional;

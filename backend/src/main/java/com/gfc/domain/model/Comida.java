@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Un producto del menu (nombre, precio en COP) cuya receta se define agregando
+ * {@link ConfiguracionIngrediente} por cada ingrediente que la compone.
+ */
 @Entity
 @Table(name = "comidas")
 public class Comida extends BaseEntity {
+    /** Requerido por Hibernate. */
     protected Comida() { }
 
     private String imagenURL;
@@ -28,6 +33,11 @@ public class Comida extends BaseEntity {
         this.imagenURL = imagenURL;
     }
 
+    /**
+     * Agrega {@code ingrediente} a la receta de esta comida.
+     *
+     * @throws IllegalArgumentException si el ingrediente ya esta configurado en esta comida.
+     */
     public ConfiguracionIngrediente configurarIngrediente(Long id, Ingrediente ingrediente,
             int cantidadBase, boolean incluidoPorDefecto, boolean permiteAdicional,
             boolean permiteRetirar, BigDecimal precioAdicional) {

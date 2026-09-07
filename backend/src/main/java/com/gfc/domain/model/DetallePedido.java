@@ -9,9 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Una linea de un {@link Pedido}: una cantidad de una {@link Comida}, con el precio y la receta
+ * congelados al momento de crearse (cambios posteriores en la comida no afectan este detalle).
+ * Se puede personalizar agregando {@link PersonalizacionIngrediente}.
+ */
 @Entity
 @Table(name = "detalles_pedido")
 public class DetallePedido extends BaseEntity {
+    /** Requerido por Hibernate. */
     protected DetallePedido() { }
 
     private int cantidad;
@@ -40,6 +46,10 @@ public class DetallePedido extends BaseEntity {
         this.receta = new ArrayList<>(comida.getIngredientes());
     }
 
+    /**
+     * @throws IllegalArgumentException si el ingrediente no pertenece a la receta congelada de
+     * este detalle, o si ya tiene una personalizacion activa para ese ingrediente.
+     */
     public void agregarPersonalizacion(PersonalizacionIngrediente personalizacion) {
         Objects.requireNonNull(personalizacion, "personalizacion");
         if (!receta.contains(personalizacion.getComidaIngrediente())) {
@@ -60,6 +70,7 @@ public class DetallePedido extends BaseEntity {
         personalizacion.desvincular();
     }
 
+    /** @return {@code (precioUnitario + costos adicionales) * cantidad}, siempre recalculado. */
     public BigDecimal calcularSubtotal() {
         BigDecimal adicionales = detallePedidoIngrediente.stream()
                 .map(PersonalizacionIngrediente::calcularCostoAdicional)
@@ -67,6 +78,7 @@ public class DetallePedido extends BaseEntity {
         return precioUnitario.add(adicionales).multiply(BigDecimal.valueOf(cantidad));
     }
 
+    /** @return true si hay stock para cada ingrediente de {@link #cantidadesNecesarias()}. No descuenta stock. */
     public boolean puedePrepararse() {
         return cantidadesNecesarias().entrySet().stream().allMatch(e -> e.getKey().hayStock(e.getValue()));
     }

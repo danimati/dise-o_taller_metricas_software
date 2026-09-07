@@ -23,7 +23,8 @@ La configuracion existente permite crear las tablas en H2 y PostgreSQL mediante 
 
 - Todos los importes usan `BigDecimal` en COP y las columnas monetarias usan `DECIMAL(19,2)`. Crear importes a partir de cadenas, por ejemplo `new BigDecimal("20000")` para veinte mil pesos. Se normalizan a dos decimales sin redondear; valores con fracciones menores de 0.01 COP o fuera de la precision de almacenamiento se rechazan.
 - Las cantidades son enteras, expresadas en la unidad del ingrediente. No hay conversion implicita entre gramos y kilogramos. Stock y precios no pueden ser negativos; cantidades de pedidos, adicionales, retiros, entradas y salidas deben ser positivas. Los desbordamientos enteros se rechazan.
-- `Usuario` permite los roles EMPLEADO y CLIENTE; `Cliente` hereda de Usuario y fija CLIENTE. Se validan nombre, documento y formato basico del email. Documento, email y nombre de usuario tienen restricciones de unicidad en la base de datos.
+- `Usuario` permite los roles EMPLEADO y CLIENTE; `Cliente` hereda de Usuario y fija CLIENTE. Se validan nombre, documento y formato basico del email. Documento, email y nombre de usuario tienen restricciones de unicidad en la base de datos. `Cliente` ademas guarda `TipoDocumento` (`CC`, `NIT`, `TI`); la unicidad sigue siendo solo sobre el numero de `documento`, sin combinarla con el tipo.
+- No existe una clase `Empleado`. Un empleado es simplemente un `Usuario` persistido con `Rol.EMPLEADO` (sin subtipo ni tabla propia), ya que no tiene atributos adicionales sobre los de `Usuario`.
 - `comprobarContraseña(String)` conserva el nombre del diagrama. El constructor recibe una contrasena y un `CodificadorContrasena`; almacena solamente el hash sin exponerlo mediante getters. El adaptador usa PBKDF2-HMAC-SHA256, salt aleatorio de 16 bytes, 600000 iteraciones y comparacion de tiempo constante del resultado. No recorta espacios de las contrasenas.
 - `Comida.configurarIngrediente(...)` crea y vincula cada configuracion a su comida; no permite repetir un ingrediente por instancia o identificador persistido. La configuracion no expone mutadores de negocio. Un ingrediente incluido por defecto necesita cantidad base positiva; uno opcional no consume stock hasta agregarse. Solo se permite retirar ingredientes incluidos por defecto.
 - La cantidad de una personalizacion representa unidades del ingrediente **por unidad de comida**, no por pedido ni por porcion base. Por ejemplo, dos comidas con tres unidades adicionales cada una necesitan seis unidades adicionales del ingrediente.
@@ -47,7 +48,7 @@ Si una hamburguesa lleva extras y otra no, se crean dos detalles de cantidad uno
 
 ```java
 var codificador = new Pbkdf2CodificadorContrasena(); // Inyectado por Spring en un caso de uso.
-var cliente = new Cliente(null, "ana", "una-clave", "123", "ana@example.com", "Ana", codificador);
+var cliente = new Cliente(null, "ana", "una-clave", TipoDocumento.CC, "123", "ana@example.com", "Ana", codificador);
 var queso = new Ingrediente(null, "Queso", 20, UnidadMedida.UNIDAD);
 var comida = new Comida(null, "Hamburguesa", new BigDecimal("20000"), null);
 var configuracion = comida.configurarIngrediente(null, queso, 2, true, true, true, new BigDecimal("1000"));
@@ -60,4 +61,8 @@ pedido.puedePrepararse(); // true: requiere 12 unidades de queso; no las descuen
 
 ## Verificacion
 
-Ejecutar `mvn -B test` desde `backend` con JDK 21 o compatible. Las pruebas cubren calculos exactos, actualizacion de totales, permisos, retiros, opcionales, stock agregado, composicion, invariantes, movimientos y hashes reales. Las pruebas JPA guardan y recargan pedidos completos, verifican herencia, receta historica, borrado de hijos, autenticacion tras carga e inventario persistido.
+No hay pruebas automatizadas en el proyecto (se eliminaron por decision del equipo); las clases
+del dominio llevan Javadoc con las reglas y excepciones de cada operacion. Para verificar el
+comportamiento de punta a punta, usar la coleccion Postman en
+[`postman/GFC-Backend.postman_collection.json`](../postman/GFC-Backend.postman_collection.json)
+contra el backend corriendo (`mvn -B spring-boot:run` desde `backend` con JDK 21 o compatible).

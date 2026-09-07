@@ -5,10 +5,16 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Agregar o retirar unidades de un ingrediente de la receta de un {@link DetallePedido}. Un
+ * retiro nunca cuesta ni descuenta del precio; un adicional cobra
+ * {@code cantidad * precioAdicionalUnitario} (ver {@link #calcularCostoAdicional()}).
+ */
 @Entity
 @Table(name = "personalizaciones_ingrediente", uniqueConstraints =
         @UniqueConstraint(columnNames = {"detalle_id", "configuracion_id"}))
 public class PersonalizacionIngrediente extends BaseEntity {
+    /** Requerido por Hibernate. */
     protected PersonalizacionIngrediente() { }
 
     private int cantidad;
@@ -24,6 +30,10 @@ public class PersonalizacionIngrediente extends BaseEntity {
     @JoinColumn(name = "detalle_id", nullable = false)
     private DetallePedido detalle;
 
+    /**
+     * @throws IllegalArgumentException si la configuracion no permite este tipo de
+     * personalizacion, o si se intenta retirar mas que la cantidad base incluida.
+     */
     public PersonalizacionIngrediente(Long id, ConfiguracionIngrediente comidaIngrediente,
                                      int cantidad, TipoPersonalizacion tipoAdicion) {
         super(id);
@@ -40,6 +50,7 @@ public class PersonalizacionIngrediente extends BaseEntity {
                 ? comidaIngrediente.getPrecioAdicional() : BigDecimal.ZERO;
     }
 
+    /** @return {@code precioAdicionalUnitario * cantidad}; siempre cero para un retiro. */
     public BigDecimal calcularCostoAdicional() {
         return precioAdicionalUnitario.multiply(BigDecimal.valueOf(cantidad));
     }
