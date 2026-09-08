@@ -20,6 +20,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // CSRF deshabilitado de forma segura: autenticacion stateless via Bearer token en
+        // el header Authorization (nunca cookies de sesion), por lo que el navegador no
+        // puede adjuntar credenciales automaticamente en peticiones cross-site.
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
