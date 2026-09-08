@@ -30,7 +30,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        // CSRF is safe to disable: auth is stateless JWT sent via Authorization header (no session cookies), so CSRF attacks don't apply.
+        http.csrf(csrf -> csrf.disable()) // NOSONAR java:S4502 - stateless token-based API, not cookie/session based
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
