@@ -10,6 +10,6 @@ services:
       args:
         PUBLIC_GFC_API_URL: http://localhost:8080
     ports:
-      - "4321:80"
+      - "4321:4321"
     depends_on:
       - backend
